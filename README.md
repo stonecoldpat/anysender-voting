@@ -103,7 +103,7 @@ const receipt = await anysender.executeRequest(signedRelayTx);
 
 If the relay request is successful, then the any.sender service will sign the relay transaction and return it back as a signed receipt. 
 
-This is the incredible part of the any.sender protocol. 
+## The incredible part of the any.sender protocol. 
 
 The customer has **cryptographic evidence the job was accepted** by the any.sender service and they will also have **blockchain evidence if the job was completed before the deadline** as Relay.sol timestamps all completed requests.
 
