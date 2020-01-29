@@ -86,7 +86,7 @@ getSignedRelayTx(
   contract: Contract,
   wallet: Wallet,
   provider: Provider
-) {
+)
 ```
 
 As long as the dapp developer can put together the callData [(super easy to do)](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L138), we'll wrap it up in such a way that the any.sender service can process it. 
