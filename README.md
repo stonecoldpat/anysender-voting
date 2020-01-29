@@ -1,8 +1,10 @@
 # Cast a vote via any.sender 
 
-We have put together an example of how to use the any.sender service. Of course, we'll use everyone's first and favourite smart contract Ballot.sol. 
+We have put together an example of how to use the any.sender service.
 
 We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
+
+Of course, we will use the famous Ballot.sol smart contract as our running example :) 
 
 ### Suite of smart contracts
 
@@ -14,7 +16,7 @@ We have an additional smart contracts, RefundAdjudicator.sol & LockableDeposit.s
 
 ### Registering to the any.sender service 
 
-All the customer needs to do is deposit ether in Relay.sol. 
+To register, a customer needs to deposit in Relay.sol. 
 
 We provide a simple [deposit utility](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L23) function to handle sending the required ether to the relay.sol contract:
 
@@ -42,7 +44,9 @@ Our backend is simply. It just tallies all deposits (alongside pending/spent rel
 
 ### Preparing the relay transaction for any.sender
 
-How do we send a job up to the any.sender service? We've created a relay transaction format that is *similar* to how transactions are dealt with today: 
+How do we send a job up to the any.sender service? 
+
+We have created a relay transaction format that is similar to how transactions are dealt with today: 
 
 ```
     --- Signed Relay Transaction --- 
@@ -56,7 +60,7 @@ How do we send a job up to the any.sender service? We've created a relay transac
     readonly signature: string; // Customer's signature to authorise relay
  ```
  
-As we can see, it is a relatively straight forward transaction format. 
+As we can see, it contains the basic ingredients of a transaction. Let's look a little closer: 
 
 - *To & From:* Who authorised the transaction and what is the destination contract address? 
 
