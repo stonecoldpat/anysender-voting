@@ -26,7 +26,7 @@ contract Ballot is MetaTransaction {
     event VoteRecorded(uint proposal, address voter);
     event RegisteredVoter(address voter);
 
-    /// Create a new ballot to choose one of proposalNames`.
+    /// Create a new ballot to choose one of proposalNames
     constructor(bytes32[] memory proposalNames) public {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
