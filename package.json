@@ -1,0 +1,44 @@
+{
+  "name": "@any-sender/votingexample",
+  "version": "0.1.0",
+  "description": "Voting via any.sender",
+  "author": "stonecoldpat <stonecoldpat@gmail.com>",
+  "homepage": "https://github.com/PISAresearch/any.sender/tree/master/packages/votingexample#readme",
+  "license": "ISC",
+  "types": "lib/index",
+  "main": "lib/index",
+  "directories": {
+    "lib": "build",
+    "test": "__tests__"
+  },
+  "files": [
+    "build"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PISAresearch/any.sender.git"
+  },
+  "scripts": {
+    "build-execute": "npm run build && npm run execute",
+    "execute": "ts-node src/ts/vote.ts",
+    "build": "waffle waffle.json && npm run build-types",
+    "build-types": "typechain --target ethers --outDir ./out ./compiledSol/**/*.json"
+  },
+  "bugs": {
+    "url": "https://github.com/PISAresearch/any.sender/issues"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0",
+    "cross-fetch": "^3.0.4",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {
+    "@any-sender/client": "^0.1.4",
+    "@types/node": "^13.5.0",
+    "@types/request-promise-native": "^1.0.17",
+    "ethereum-waffle": "2.3.0",
+    "ethers": "4.0.41",
+    "typechain": "1.0.3",
+    "typechain-target-ethers": "^1.0.3"
+  }
+}

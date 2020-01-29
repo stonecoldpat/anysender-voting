@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "lib": ["ES2015", "DOM"],
+    "rootDir": "src",
+    "outDir": "./lib"
+  },
+  "files": ["src/contracts/PerformanceTest.d.ts"],
+  "include": ["src"]
+}
