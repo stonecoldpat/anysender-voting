@@ -12,7 +12,7 @@ We have two contracts:
 - *Ballot.sol:* Our voting smart contract (with built-in meta-transaction support)
 - *Relay.sol:* All any.sender relay jobs are sent via a central contract. 
 
-We have an additional smart contracts, RefundAdjudicator.sol & LockableDeposit.sol, that will force an any.sender operator to refund the customer if it fails to satisify a promised quality of service. But we will focus on that another time :) 
+We have additional smart contracts, RefundAdjudicator.sol & LockableDeposit.sol, that will force an any.sender operator to refund the customer if it fails to satisify a promised quality of service. But we will focus on that another time :) 
 
 ### Registering to the any.sender service 
 
@@ -24,7 +24,7 @@ We provide a simple [deposit utility](https://github.com/stonecoldpat/anysender-
 onchainDeposit(toDeposit: BigNumber, wallet: Wallet)
 ````
 
-By depositing in the Relay.sol contract, the any.sender service will acknowledge the deposit and associate it with the sending key. *Coming soon: A DepositFor() function, to let users deposit on behalf of others.*
+By depositing in the Relay.sol contract, the any.sender service acknowledges the deposit and will associate it with the sending key. *Coming soon: A DepositFor() function, to let users deposit on behalf of others.*
 
 (In the future; we might support deposits in ERC20 that are auto-swapped to ETH via uniswap/kyberswap.)
 
@@ -38,9 +38,9 @@ We provide a simple [check balance ultility](https://github.com/stonecoldpat/any
 checkBalance(wallet: Wallet) 
 ```
 
-It will contact the any.sender service with the signer's address and return the customer's balance.
+It contacts the any.sender service with the signer's address and return the customer's balance.
 
-Our backend is simply. It just tallies all deposits (alongside pending/spent relay transactions) to work out the current balance. 
+Our backend is simple. It just tallies all deposits (alongside pending/spent relay transactions) to work out the current balance. 
 
 ### Preparing the relay transaction for any.sender
 
