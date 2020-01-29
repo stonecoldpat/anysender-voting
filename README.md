@@ -1,10 +1,10 @@
-# Cast a vote on ballot.sol via any.sender 
+# Cast a vote via any.sender 
 
 We have put together an example of how to use the any.sender service. Of course, we'll use everyone's first and favourite smart contract Ballot.sol. 
 
 We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
 
-### Suite of Smart Contracts
+### Suite of smart contracts
 
 We have two contracts:
 - *Ballot.sol:* Our voting smart contract (with built-in meta-transaction support)
