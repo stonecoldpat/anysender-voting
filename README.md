@@ -99,7 +99,6 @@ Again, it is pretty easy. We can simply [send the job to the any.sender service]
 
 ```
 const receipt = await anysender.executeRequest(signedRelayTx);
-
 ```
 
 If the relay request is successful, then the any.sender service will sign the relay transaction and return it back as a signed receipt. 
