@@ -4,13 +4,13 @@ We have put together an example of how to use the any.sender service. Of course,
 
 We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
 
-### Contracts
+### Suite of Smart Contracts
 
 We have two contracts:
 - *Ballot.sol:* Our voting smart contract (with built-in meta-transaction support)
 - *Relay.sol:* All any.sender relay jobs are sent via a central contract. 
 
-We have an additional smart contract, RefundAdjudicator.sol, that will force an any.sender operator to refund the customer if it fails to satisify a promised quality of service. We will talk about that later :)
+We have an additional smart contracts, RefundAdjudicator.sol & LockableDeposit.sol, that will force an any.sender operator to refund the customer if it fails to satisify a promised quality of service. But we will focus on that another time :) 
 
 ### Registrating for any.sender
 
