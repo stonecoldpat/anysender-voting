@@ -1,4 +1,4 @@
-# Cast a vote via any.sender 
+# Cast a vote using the any.sender service
 
 We have put together an example of how to use the any.sender service.
 
@@ -95,7 +95,7 @@ As long as the dapp developer can put together the callData [(super easy to do)]
 
 OK. So we have put together a new signed relay transaction for the any.sender service. How do we get it in the blockchain?
 
-Again, it is pretty easy. We can simply send the job to the any.sender service via [a rest-api]*https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L161): 
+Again, it is pretty easy. We can simply [send the job to the any.sender service](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L161): 
 
 ```
 const receipt = await anysender.executeRequest(signedRelayTx);
