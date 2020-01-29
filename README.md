@@ -2,9 +2,7 @@
 
 We have put together an example of how to use the any.sender service. Of course, we'll use everyone's first and favourite smart contract Ballot.sol. 
 
-## High-level overview
-
-The user wants to cast a vote in Ballot.sol using the any.sender service. We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
+We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
 
 ### Contracts
 
