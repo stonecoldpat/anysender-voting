@@ -16,7 +16,7 @@ import {
   getAnySenderClient,
   subscribe,
   getReplayProtection,
-  getUnsignedRelayTx
+  getSignedRelayTx
 } from "./anysender-utils";
 
 // Steal my testnet coins and you are just a bad person
@@ -142,7 +142,7 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   ]);
 
   // Creates the unsigned relay transaction
-  const unsignedRelayTx = await getUnsignedRelayTx(
+  const signedRelayTx = await getSignedRelayTx(
     1000000, // Gas limit
     callData, // Encoded call data
     parseEther("0.000000001").toString(), // Requested Refund (if fails)
@@ -152,19 +152,13 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   );
 
   // Let's sign it and send it off!
-  const relayTxId = await getRelayTxID(unsignedRelayTx);
-  const signature = await wallet.signMessage(arrayify(relayTxId));
-  const signedRelayTx: RelayTransaction = {
-    ...unsignedRelayTx,
-    signature: signature
-  };
   const txReceipt = await anysender.executeRequest(signedRelayTx);
 
   // Receipt of any.sender
   console.log(txReceipt);
 
   // Waits until the RelayTxID is confirmed via Relay.sol
-  await subscribe(relayTxId, wallet, provider);
+  await subscribe(await getRelayTxID(signedRelayTx), wallet, provider);
 
   // Let's confirm the voter is registered
   console.log(await ballot.voters(wallet.address));
@@ -176,10 +170,10 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   console.log("Admin: " + adminWallet.address);
   console.log("Voter: " + voterWallet.address);
 
-  // Deposit to any.sender
-  console.log("Depositing 0.5 eth to any.sender.");
-  await onchainDeposit(parseEther("0.5"), voterWallet);
-  console.log("Deposit processed.");
+  // // Deposit to any.sender
+  // console.log("Depositing 0.5 eth to any.sender.");
+  // await onchainDeposit(parseEther("0.5"), voterWallet);
+  // console.log("Deposit processed.");
 
   console.log("Deploy ballot contract.");
   const ballot = await deployBallotContract(adminWallet, provider);

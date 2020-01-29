@@ -104,7 +104,7 @@ export async function checkBalance(wallet: Wallet) {
 }
 
 /**
- * Fetches an unsigned relay transaction
+ * Fetches a signed relay transaction
  * @param gas Gas limit
  * @param callData Calldata to be executed
  * @param refund Requested refund (if fails)
@@ -112,7 +112,7 @@ export async function checkBalance(wallet: Wallet) {
  * @param wallet Signer
  * @param provider InfuraProvider
  */
-export async function getUnsignedRelayTx(
+export async function getSignedRelayTx(
   gas: number,
   callData: string,
   refund: string,
