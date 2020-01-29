@@ -170,10 +170,10 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   console.log("Admin: " + adminWallet.address);
   console.log("Voter: " + voterWallet.address);
 
-  // // Deposit to any.sender
-  // console.log("Depositing 0.5 eth to any.sender.");
-  // await onchainDeposit(parseEther("0.5"), voterWallet);
-  // console.log("Deposit processed.");
+  // Deposit to any.sender
+  console.log("Depositing 0.5 eth to any.sender.");
+  await onchainDeposit(parseEther("0.5"), voterWallet);
+  console.log("Deposit processed.");
 
   console.log("Deploy ballot contract.");
   const ballot = await deployBallotContract(adminWallet, provider);
