@@ -12,9 +12,7 @@ We have two contracts:
 
 We have an additional smart contracts, RefundAdjudicator.sol & LockableDeposit.sol, that will force an any.sender operator to refund the customer if it fails to satisify a promised quality of service. But we will focus on that another time :) 
 
-### Registrating for any.sender
-
-Registering for the any.sender service is straight-forward. 
+### Registering to the any.sender service 
 
 All the customer needs to do is deposit ether in Relay.sol. 
 
