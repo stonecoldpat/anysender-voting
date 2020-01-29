@@ -64,19 +64,19 @@ How do we send a job up to the any.sender service? We've created a relay transac
  
 As we can see, it is a relatively straight forward transaction format. 
 
-**To & From.** Who authorised the transaction and what is the destination contract address? 
+- *To & From:* Who authorised the transaction and what is the destination contract address? 
 
-**Gas & Data.** How much gas can we use? And what is the calldata that should be executed at the destination contract? 
+- *Gas & Data:* How much gas can we use? And what is the calldata that should be executed at the destination contract? 
 
-**DeadlineBlockNumber & Refund** What quality of service will the any.sender service provider? If the relay transaction does not get in the blockchai before the deadline, then the customer is entitled to the pre-agreed refund. 
+- *DeadlineBlockNumber & Refund:* What quality of service will the any.sender service provider? If the relay transaction does not get in the blockchai before the deadline, then the customer is entitled to the pre-agreed refund. 
 
-**RelayContractAddress** All relay transactions are processed via the any.sender contract. The blockchain timestamps when the job was completed and this can be used as evidence if the any.sender service fails to provide its promised quality of service. 
+- *RelayContractAddress:* All relay transactions are processed via the any.sender contract. The blockchain timestamps when the job was completed and this can be used as evidence if the any.sender service fails to provide its promised quality of service. 
 
 A keen reader will hopefully notice two missing ingredients; 
 
-**No gas price?** As an any.sender operator, our job is to first send the transaction at a low fee (saving you money), but to gradually keep bumping the fee until the transaction gets in, so we can always beat congestion. 
+- *No gas price?* As an any.sender operator, our job is to first send the transaction at a low fee (saving you money), but to gradually keep bumping the fee until the transaction gets in, so we can always beat congestion. 
 
-**No replay protection?** Our transaction format does not include replay protection. We must assume the replay protection is built into the smart contract (to:), otherwise anyone can copy and publish the calldata to perform replay attacks. We have provided in-depth recommendations on [how to incorporate replay protection](https://github.com/PISAresearch/metamask-comp) and in this example we have incorporated [Bitflip-ordering](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L48). 
+- *No replay protection?* Our transaction format does not include replay protection. We must assume the replay protection is built into the smart contract (to:), otherwise anyone can copy and publish the calldata to perform replay attacks. We have provided in-depth recommendations on [how to incorporate replay protection](https://github.com/PISAresearch/metamask-comp) and in this example we have incorporated [Bitflip-ordering](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L48). 
 
 OK so back to the story. We provide a simple utility function to easily fetch a signed relay transaction: 
 
@@ -112,8 +112,8 @@ The customer has **cryptographic evidence the job was accepted** by the any.send
 
 So if the any.sender service fails to provide the promised quality of service, then the receipt can be sent to the RefundAdjudicator.sol contract. There are two outcomes:
 
-- **Refund:** The customer is refunded the pre-agreed amount according to the receipt. 
-- **Slashed:** The any.sender service has an on-chain security deposit that will be slashed. 
+- *Refund:* The customer is refunded the pre-agreed amount according to the receipt. 
+- *Slashed:* The any.sender service has an on-chain security deposit that will be slashed. 
 
 **Why is this magical?** Well as the example demonstrates, it is a pretty straight-forward and simple way to relay transactions to the blockchain, and at the same time, the operator is held fully financially accountable for their actions. If a quality of service is not delivered, then the operator must refund the customer or get slashed (e.g. fined). This smart contract-enforced accountable is the future of Ethereum and now it is ready to try. So give it a shot. 
 
