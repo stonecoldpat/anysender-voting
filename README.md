@@ -40,7 +40,7 @@ It will contact the any.sender service with the signer's address and return the 
 
 Our backend is simply. It just tallies all deposits (alongside pending/spent relay transactions) to work out the current balance. 
 
-### Preparing the Relay Transaction for any.sender
+### Preparing the relay transaction for any.sender
 
 How do we send a job up to the any.sender service? We've created a relay transaction format that is *similar* to how transactions are dealt with today: 
 
@@ -54,8 +54,6 @@ How do we send a job up to the any.sender service? We've created a relay transac
     readonly refund: string; // How much to refund the user by, in wei.
     readonly relayContractAddress: string; // Our relay.sol contract 
     readonly signature: string; // Customer's signature to authorise relay
-    
-    
  ```
  
 As we can see, it is a relatively straight forward transaction format. 
