@@ -112,6 +112,8 @@ So if the any.sender service fails to provide the promised quality of service, t
 - *Refund:* The customer is refunded the pre-agreed amount according to the receipt. 
 - *Slashed:* The any.sender service has an on-chain security deposit that will be slashed. 
 
-**Why is this magical?** Well as the example demonstrates, it is a pretty straight-forward and simple way to relay transactions to the blockchain, and at the same time, the operator is held fully financially accountable for their actions. If a quality of service is not delivered, then the operator must refund the customer or get slashed (e.g. fined). This smart contract-enforced accountable is the future of Ethereum and now it is ready to try. So give it a shot. 
+**Why is this magical?** Well as the example demonstrates, it is a pretty straight-forward and simple way to relay transactions to the blockchain, and at the same time, the operator is held fully financially accountable for their actions. If a quality of service is not delivered, then the operator must refund the customer or get slashed (e.g. fined). 
+
+**Smart contract-enforced accountability is the future of Ethereum and now it is ready to try.**
 
 
