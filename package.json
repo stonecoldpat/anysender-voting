@@ -33,7 +33,7 @@
     "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
-    "@any-sender/client": "^0.1.4",
+    "@any-sender/client": "^0.1.8",
     "@types/node": "^13.5.0",
     "@types/request-promise-native": "^1.0.17",
     "ethereum-waffle": "2.3.0",

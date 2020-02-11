@@ -5,15 +5,12 @@ import { RelayFactory } from "@any-sender/contracts";
 import AnySenderClient from "@any-sender/client";
 import { RelayTransaction } from "@any-sender/data-entities";
 
-export const MINIMUM_ANYSENDER_DEADLINE = 12;
-const ANYSENDER_BALANCE_URL = "18.188.185.156";
-const ANYSENDER_RELAY_URL =
-  "https://y9g7myp1zl.execute-api.us-east-2.amazonaws.com/Stage";
-const ANYSENDER_PORT = "5399";
+export const MINIMUM_ANYSENDER_DEADLINE = 400;
+const ANYSENDER_API = "https://api.pisa.watch/any.sender.ropsten";
 const ANYSENDER_BALANCE = "/balance/";
-const ANYSENDER_ADDR = "0xE25ec6cB37b1a37D8383891BC5DFd627c6Cd66C8";
-const RECEIPT_ADDR = "0xe41743ca34762b84004d3abe932443fc51d561d5";
-const DEPOSIT_CONFIRMATIONS = 11;
+const ANYSENDER_RELAY_CONTRACT = "0xe8468689AB8607fF36663EE6522A7A595Ed8bC0C";
+const RECEIPT_ADDR = "0xe41743Ca34762b84004D3ABe932443FC51D561D5";
+const DEPOSIT_CONFIRMATIONS = 10;
 
 /**
  * Deposit coins into any.sender contract.
@@ -22,7 +19,7 @@ const DEPOSIT_CONFIRMATIONS = 11;
  */
 export async function onchainDeposit(toDeposit: BigNumber, wallet: Wallet) {
   const tx = await wallet.sendTransaction({
-    to: ANYSENDER_ADDR,
+    to: ANYSENDER_RELAY_CONTRACT,
     value: toDeposit
   });
 
@@ -33,7 +30,7 @@ export async function onchainDeposit(toDeposit: BigNumber, wallet: Wallet) {
  * Fetch an any.sender client instance
  */
 export async function getAnySenderClient() {
-  return new AnySenderClient(ANYSENDER_RELAY_URL, ANYSENDER_ADDR, RECEIPT_ADDR);
+  return new AnySenderClient(ANYSENDER_API, RECEIPT_ADDR);
 }
 
 /**
@@ -86,13 +83,7 @@ function flipBit(bits: BigNumber, indexToFlip: BigNumber): BigNumber {
  * @param wallet Signer
  */
 export async function checkBalance(wallet: Wallet) {
-  const balanceUrl =
-    "http://" +
-    ANYSENDER_BALANCE_URL +
-    ":" +
-    ANYSENDER_PORT +
-    ANYSENDER_BALANCE +
-    wallet.address;
+  const balanceUrl = ANYSENDER_API + ANYSENDER_BALANCE + wallet.address;
 
   const res = await fetch(balanceUrl);
 
@@ -130,7 +121,7 @@ export async function getSignedRelayTx(
     data: callData,
     deadlineBlockNumber: blockNo,
     refund: refund,
-    relayContractAddress: ANYSENDER_ADDR
+    relayContractAddress: ANYSENDER_RELAY_CONTRACT
   };
 
   const relayTxId = await getRelayTxID(unsignedRelayTx);
@@ -151,27 +142,25 @@ export async function getSignedRelayTx(
  * @param provider InfuraProvider
  */
 export async function subscribe(
-  relayTxId: string,
+  relayTx: RelayTransaction,
   wallet: Wallet,
   provider: Provider
 ) {
-  const anysender = await getAnySenderClient();
+  const anysender: AnySenderClient = await getAnySenderClient();
   const blockNo = await provider.getBlockNumber();
-  const topic = ethers.utils.id(
-    "RelayExecuted(bytes32,bool,address,uint256,uint256)"
-  );
+  const topics = AnySenderClient.getRelayExecutedEventTopics(relayTx);
 
   const filter = {
-    address: anysender.relayContractAddress,
+    address: ANYSENDER_RELAY_CONTRACT,
     fromBlock: blockNo - 2,
-    topics: [topic]
+    topics: [topics]
   };
+
+  const relayTxId = await getRelayTxID(relayTx);
 
   return new Promise(resolve => {
     provider.once(filter, result => {
-      const relay = new RelayFactory(wallet).attach(
-        anysender.relayContractAddress
-      );
+      const relay = new RelayFactory(wallet).attach(ANYSENDER_RELAY_CONTRACT);
 
       const recordedRelayTxId = relay.interface.events.RelayExecuted.decode(
         result.data,

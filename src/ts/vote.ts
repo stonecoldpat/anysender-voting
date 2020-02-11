@@ -1,29 +1,25 @@
 import { ethers, Wallet, Contract } from "ethers";
 import { BallotFactory } from "../../out/BallotFactory";
-import { RelayTransaction } from "@any-sender/data-entities";
 import { Provider } from "ethers/providers";
 import {
   defaultAbiCoder,
   keccak256,
-  arrayify,
   BigNumber,
   parseEther
 } from "ethers/utils";
 
 import {
-  getRelayTxID,
   onchainDeposit,
   getAnySenderClient,
   subscribe,
   getReplayProtection,
   getSignedRelayTx
 } from "./anysender-utils";
+import { Ballot } from "../../out/Ballot";
 
 // Steal my testnet coins and you are just a bad person
-const adminMnemonic =
-  "replace title antenna spare vendor dad solution stone whale goat impact liar";
-const voterMnemonic =
-  "false unhappy finger doll before vocal visual spread match adjust cross wild";
+const adminMnemonic = "<12 words>";
+const voterMnemonic = "<12 worlds>";
 
 /**
  * Set up the provider and wallet
@@ -31,7 +27,7 @@ const voterMnemonic =
 async function setup() {
   const infuraProvider = new ethers.providers.InfuraProvider(
     "ropsten",
-    "7333c8bcd07b4a179b0b0a958778762b"
+    "providerKey"
   );
 
   const adminMnemonicWallet = ethers.Wallet.fromMnemonic(adminMnemonic);
@@ -152,13 +148,13 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   );
 
   // Let's sign it and send it off!
-  const txReceipt = await anysender.executeRequest(signedRelayTx);
+  const txReceipt = await anysender.relay(signedRelayTx);
 
   // Receipt of any.sender
   console.log(txReceipt);
 
   // Waits until the RelayTxID is confirmed via Relay.sol
-  await subscribe(await getRelayTxID(signedRelayTx), wallet, provider);
+  await subscribe(signedRelayTx, wallet, provider);
 
   // Let's confirm the voter is registered
   console.log(await ballot.voters(wallet.address));
