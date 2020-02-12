@@ -1,11 +1,11 @@
-import { Wallet, Contract, ethers } from "ethers";
+import { Wallet, Contract } from "ethers";
 import { defaultAbiCoder, BigNumber, keccak256, arrayify } from "ethers/utils";
 import { Provider } from "ethers/providers";
 import { RelayFactory } from "@any-sender/contracts";
 import AnySenderClient from "@any-sender/client";
 import { RelayTransaction } from "@any-sender/data-entities";
 
-export const MINIMUM_ANYSENDER_DEADLINE = 400;
+export const MINIMUM_ANYSENDER_DEADLINE = 410; // It is 400, but provides some wiggle room.
 const ANYSENDER_API = "https://api.pisa.watch/any.sender.ropsten";
 const ANYSENDER_BALANCE = "/balance/";
 const ANYSENDER_RELAY_CONTRACT = "0xe8468689AB8607fF36663EE6522A7A595Ed8bC0C";
@@ -17,9 +17,15 @@ const DEPOSIT_CONFIRMATIONS = 10;
  * @param wallet Signer
  * @param provider InfuraProvider
  */
-export async function onchainDeposit(toDeposit: BigNumber, wallet: Wallet) {
-  const tx = await wallet.sendTransaction({
-    to: ANYSENDER_RELAY_CONTRACT,
+export async function onchainDeposit(
+  toDeposit: BigNumber,
+  adminWallet: Wallet,
+  customerWallet: Wallet
+) {
+  const relayFactory = new RelayFactory(adminWallet);
+  const relay = relayFactory.attach(ANYSENDER_RELAY_CONTRACT);
+
+  const tx = await relay.depositFor(customerWallet.address, {
     value: toDeposit
   });
 
@@ -146,7 +152,6 @@ export async function subscribe(
   wallet: Wallet,
   provider: Provider
 ) {
-  const anysender: AnySenderClient = await getAnySenderClient();
   const blockNo = await provider.getBlockNumber();
   const topics = AnySenderClient.getRelayExecutedEventTopics(relayTx);
 

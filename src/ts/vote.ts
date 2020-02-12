@@ -15,11 +15,12 @@ import {
   getReplayProtection,
   getSignedRelayTx
 } from "./anysender-utils";
-import { Ballot } from "../../out/Ballot";
 
-// Steal my testnet coins and you are just a bad person
-const adminMnemonic = "<12 words>";
-const voterMnemonic = "<12 worlds>";
+// This account has ETHER to top up the any.sender service
+const adminMnemonic = "12 word seed";
+
+// This account has NO ETHER and must send transactions via any.sender
+const voterMnemonic = "12 word seed";
 
 /**
  * Set up the provider and wallet
@@ -27,7 +28,7 @@ const voterMnemonic = "<12 worlds>";
 async function setup() {
   const infuraProvider = new ethers.providers.InfuraProvider(
     "ropsten",
-    "providerKey"
+    "<pk here>"
   );
 
   const adminMnemonicWallet = ethers.Wallet.fromMnemonic(adminMnemonic);
@@ -167,18 +168,20 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   console.log("Voter: " + voterWallet.address);
 
   // Deposit to any.sender
-  console.log("Depositing 0.5 eth to any.sender.");
-  await onchainDeposit(parseEther("0.5"), voterWallet);
+  console.log(
+    "Admin deposits 0.5 ether into the any.sender contract for the voter"
+  );
+  await onchainDeposit(parseEther("0.5"), adminWallet, voterWallet);
   console.log("Deposit processed.");
 
   console.log("Deploy ballot contract.");
   const ballot = await deployBallotContract(adminWallet, provider);
   console.log("Ballot contract: " + ballot.address);
 
-  console.log("Register voter");
+  console.log("Admin registers voter");
   await setupVoter(ballot, adminWallet, voterWallet);
 
-  console.log("Cast vote");
+  console.log("Voter casts vote -- using the any.sender service");
   await castVote(ballot, voterWallet, provider);
 
   console.log("One small step for satoshi. One giant leap for mankind.");
