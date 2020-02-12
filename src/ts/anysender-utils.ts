@@ -17,7 +17,7 @@ const DEPOSIT_CONFIRMATIONS = 10;
  * @param wallet Signer
  * @param provider InfuraProvider
  */
-export async function onchainDeposit(
+export async function onchainDepositFor(
   toDeposit: BigNumber,
   adminWallet: Wallet,
   customerWallet: Wallet

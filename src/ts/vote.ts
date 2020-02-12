@@ -9,7 +9,7 @@ import {
 } from "ethers/utils";
 
 import {
-  onchainDeposit,
+  onchainDepositFor,
   getAnySenderClient,
   subscribe,
   getReplayProtection,
@@ -171,7 +171,7 @@ async function castVote(ballot: Contract, wallet: Wallet, provider: Provider) {
   console.log(
     "Admin deposits 0.5 ether into the any.sender contract for the voter"
   );
-  await onchainDeposit(parseEther("0.5"), adminWallet, voterWallet);
+  await onchainDepositFor(parseEther("0.5"), adminWallet, voterWallet);
   console.log("Deposit processed.");
 
   console.log("Deploy ballot contract.");
