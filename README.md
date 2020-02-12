@@ -59,15 +59,15 @@ We have additional smart contracts, RefundAdjudicator.sol & LockableDeposit.sol,
 
 ### Registering to the any.sender service 
 
-To register, a customer needs to deposit in Relay.sol. 
+To register, the admin deposits coins on behalf of the voter in Relay.sol 
 
-We provide a simple [deposit utility](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L23) function to handle sending the required ether to the relay.sol contract:
+We provide a simple [depositFor utility](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L20) function.
 
 ```
-onchainDeposit(toDeposit: BigNumber, wallet: Wallet)
+onchainDepositFor(toDeposit: BigNumber, adminWallet: Wallet, voterWallet: Wallet)
 ````
 
-By depositing in the Relay.sol contract, the any.sender service acknowledges the deposit and will associate it with the sending key. *Coming soon: A DepositFor() function, to let users deposit on behalf of others.*
+By depositing in the Relay.sol contract, the any.sender service acknowledges the deposit and associates it with the voter's wallet. *i.e. This takes advantage of the relay.depositFor() functionality.*
 
 (In the future; we might support deposits in ERC20 that are auto-swapped to ETH via uniswap/kyberswap.)
 
@@ -75,7 +75,7 @@ By depositing in the Relay.sol contract, the any.sender service acknowledges the
 
 But how do I know if any.sender has recognised a deposit? Easy. 
 
-We provide a simple [check balance ultility](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L88) function to handle sending a request to the any.sender service: 
+We provide a simple [check balance ultility](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L91) function to handle sending a request to the any.sender service: 
 
 ```
 checkBalance(wallet: Wallet) 
@@ -117,7 +117,7 @@ A keen reader will hopefully notice two missing ingredients;
 
 - *No gas price?* As an any.sender operator, our job is to first send the transaction at a low fee (saving you money), but to gradually keep bumping the fee until the transaction gets in, so we can always beat congestion. 
 
-- *No replay protection?* Our transaction format does not include replay protection. We must assume the replay protection is built into the smart contract (to:), otherwise anyone can copy and publish the calldata to perform replay attacks. We have provided in-depth recommendations on [how to incorporate replay protection](https://github.com/PISAresearch/metamask-comp) and in this example we have incorporated [Bitflip-ordering](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L48). 
+- *No replay protection?* Our transaction format does not include replay protection. We must assume the replay protection is built into the smart contract (to:), otherwise anyone can copy and publish the calldata to perform replay attacks. We have provided in-depth recommendations on [how to incorporate replay protection](https://github.com/PISAresearch/metamask-comp) and in this example we have incorporated [Bitflip-ordering](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/anysender-utils.ts#L51). 
 
 OK so back to the story. We provide a simple utility function to easily fetch a signed relay transaction: 
 
@@ -132,16 +132,16 @@ getSignedRelayTx(
 )
 ```
 
-As long as the dapp developer can put together the callData [(super easy to do)](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L138), we'll wrap it up in such a way that the any.sender service can process it. 
+As long as the dapp developer can put together the callData [(super easy to do)](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L135), we'll wrap it up in such a way that the any.sender service can process it. 
 
 ### How Relay.sol processes the relay transaction 
 
 OK. So we have put together a new signed relay transaction for the any.sender service. How do we get it in the blockchain?
 
-Again, it is pretty easy. We can simply [send the job to the any.sender service](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L155): 
+Again, it is pretty easy. We can simply [send the job to the any.sender service](https://github.com/stonecoldpat/anysender-voting/blob/master/src/ts/vote.ts#L152): 
 
 ```
-const receipt = await anysender.executeRequest(signedRelayTx);
+const receipt = await anysender.relay(signedRelayTx);
 ```
 
 If the relay request is successful, then the any.sender service will sign the relay transaction and return it back as a signed receipt. 
