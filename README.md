@@ -2,9 +2,52 @@
 
 We have put together an example of how to use the any.sender service.
 
+Of course, we will use the famous Ballot.sol smart contract as our running example :) 
+
+## Quick edits to run our example 
+
+In our example, you will need to edit three lines of code in `vote.ts`. 
+
+```
+// This account has ETHER to top up the any.sender service
+const adminMnemonic = "12 word seed";
+
+// This account has NO ETHER and must send transactions via any.sender
+const voterMnemonic = "12 word seed";
+```
+
+We need two wallet seeds for the admin and voter. Note the admin wallet should have at least 1 testnet ether as it will be used to top-up the any.sender service. The voter wallet does not need any ether (as it will use the any.sender service). 
+
+```
+  const infuraProvider = new ethers.providers.InfuraProvider(
+    "ropsten",
+    "<pk here>"
+  );
+```
+
+You will need an ID for an infura provider. This is easy to get via the [infura website.](https://infura.io/)
+
+Finally, all you need to do is execute it: 
+
+```
+npm install 
+npm run execute 
+```
+
+You will see: 
+- Admin top up the any.sender service, 
+- Admin deploying the ballot contract, 
+- Admin registering the voter, and 
+- Voter sending job up to any.sender and receiving a signed receipt. 
+- Voter finding the relay transaction ID on the blockchain
+- Voter confirming their vote was cast 
+
+If there are any problems, do let us know! 
+
+## How everything ties together 
+
 We'll cover the contracts involved, how to register for the any.sender service, how to check your balance, how to prepare the relay transaction and how it is processed. By the end of it, you'll have a good understanding of how everything works. 
 
-Of course, we will use the famous Ballot.sol smart contract as our running example :) 
 
 ### Suite of smart contracts
 
