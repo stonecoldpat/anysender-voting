@@ -28,7 +28,7 @@
     "url": "https://github.com/PISAresearch/any.sender/issues"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^2.4.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "cross-fetch": "^3.0.4",
     "request-promise-native": "^1.0.8"
   },
