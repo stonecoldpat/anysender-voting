@@ -36,7 +36,7 @@
     "@any-sender/client": "^0.1.8",
     "@types/node": "^13.5.0",
     "@types/request-promise-native": "^1.0.17",
-    "ethereum-waffle": "2.3.0",
+    "ethereum-waffle": "4.0.10",
     "ethers": "4.0.41",
     "typechain": "1.0.3",
     "typechain-target-ethers": "^1.0.3"
